@@ -1,3 +1,4 @@
+# Frame per second
 import pygame
 
 pygame.init() # neccessary initialization
@@ -22,24 +23,32 @@ character_y_pos = screen_height - character_height # position that is at the bot
 to_x = 0
 to_y = 0
 
+# character speed 
+character_speed = 0.6
+
+# FPS
+clock = pygame.time.Clock()
+
 # set title
 pygame.display.set_caption("Python Game")
 
 # Event loop to prevent closing the window
 running = True # game is running
 while running:
+    delta = clock.tick(20) # set frames per second
+
     for event in pygame.event.get(): # what kind of event occured?
         if event.type == pygame.QUIT: # the event is that when closing the window
             running = False
         if event.type == pygame.KEYDOWN: # if key is pressed
             if event.key == pygame.K_LEFT: # move the character to the left
-                to_x -= 5
+                to_x -= character_speed
             elif event.key == pygame.K_RIGHT: # move the character to the right
-                to_x += 5
+                to_x += character_speed
             elif event.key == pygame.K_UP: # move the character to up
-                to_y -= 5
+                to_y -= character_speed
             elif event.key == pygame.K_DOWN: # move the character to down
-                to_y += 5
+                to_y += character_speed
         if event.type ==pygame.KEYUP: # key is unpressed
             if event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT:
                 to_x =0
@@ -47,8 +56,8 @@ while running:
                 to_y =0
                 
 
-    character_x_pos += to_x
-    character_y_pos += to_y
+    character_x_pos += to_x * delta
+    character_y_pos += to_y * delta
     
     # Horizontal
     if character_x_pos < 0:
