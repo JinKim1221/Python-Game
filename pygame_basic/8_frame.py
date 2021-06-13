@@ -10,7 +10,7 @@ screen_height = 640
 screen = pygame.display.set_mode((screen_width, screen_height))
 
 # set title
-pygame.display.set_caption("Python Game")
+pygame.display.set_caption("Practice")
 
 # FPS
 clock = pygame.time.Clock()
@@ -37,7 +37,7 @@ while running:
  
     # 4. Dealing with collision 
     
-    
+
     # 5. Draw on the window
 
     pygame.display.update() # redraw the background
