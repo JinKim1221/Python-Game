@@ -78,7 +78,7 @@ while running:
     if poo_y_pos > screen_height :
         poo_y_pos = 0
         poo_x_pos = random.randint(0, screen_width - poo_width)
-        
+
     # 4. Dealing with collision 
     ninja_rect = ninja.get_rect()
     ninja_rect.left = ninja_x_pos
@@ -95,7 +95,6 @@ while running:
     screen.blit(background,(0,0))
     screen.blit(ninja, (ninja_x_pos, ninja_y_pos))
     screen.blit(poo,(poo_x_pos, poo_y_pos))
-
 
     pygame.display.update() # redraw the background
 
