@@ -221,6 +221,10 @@ while running:
                                     "to_y" : -6,   # movement to y
                                     "init_spd_y" : ball_speed_y[ball_img_index+1]}) # initial speed for y
                 break
+            else: 
+                continue
+            break
+        
     
     # remove the collided ball and weapon
     if ball_to_remove > -1:
