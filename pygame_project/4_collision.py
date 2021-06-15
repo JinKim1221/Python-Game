@@ -77,6 +77,10 @@ balls.append({
     "to_y" : -6,   # movement to y
     "init_spd_y" : ball_speed_y[0]}) # initial speed for y
 
+# weapon and ball to disappear
+weapon_to_remove = -1
+ball_to_remove = -1
+
 # Event loop to prevent closing the window
 running = True # game is running
 while running:
@@ -144,7 +148,50 @@ while running:
         ball_value["pos_y"] += ball_value["to_y"]
 
     # 4. Dealing with collision 
+    # update chracter's rect info   
+    character_rect = character.get_rect()
+    character_rect.left = character_x_pos
+    character_rect.top = character_y_pos
 
+    for ball_index, ball_value in enumerate(balls) : 
+        ball_pos_x = ball_value["pos_x"]
+        ball_pos_y = ball_value["pos_y"]
+        ball_img_index = ball_value["img_index"]
+
+        # update ball's rect info
+        ball_rect = ball_images[ball_img_index].get_rect()
+        ball_rect.left = ball_pos_x
+        ball_rect.top = ball_pos_y
+
+        # collision between ball and character
+        if character_rect.colliderect(ball_rect) :
+            running = False
+            break
+        
+        # collision between ball and weapon
+        for weapon_index, weapon_value in enumerate(weapons) : 
+            weapon_pos_x = weapon_value[0]
+            weapon_pos_y = weapon_value[1]
+            
+            # update weapon's rect info 
+            weapon_rect = weapon.get_rect()
+            weapon_rect.left = weapon_x_pos
+            weapon_rect.top = weapon_y_pos
+
+            # check collision
+            if weapon_rect.colliderect(ball_rect) :
+                weapon_to_remove = weapon_index # to reamove the current weapon
+                ball_to_remove = ball_index # to remove the current ball
+                # break
+    
+    # remove the collided ball and weapon
+    if ball_to_remove > -1:
+        del balls[ball_to_remove]
+        ball_to_remove = -1
+
+    if weapon_to_remove > -1:
+        del weapons[weapon_to_remove]
+        weapon_to_remove = -1
 
     # 5. Draw on the window
     screen.blit(background,(0,0))
