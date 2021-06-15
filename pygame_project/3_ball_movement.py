@@ -54,6 +54,28 @@ weapons = []
 # Weapon Speed
 weapon_speed = 10
 
+# Balls Info
+ball_images = [
+    pygame.image.load(os.path.join(image_path, "balloon1.png")),
+    pygame.image.load(os.path.join(image_path, "balloon2.png")),
+    pygame.image.load(os.path.join(image_path, "balloon3.png")),
+    pygame.image.load(os.path.join(image_path, "balloon4.png"))]
+
+# Balls Speed depending on the size
+ball_speed_y = [-18, -15, -12, -9] # speed value that assigned to index 0, 1, 2, 3
+
+# Balls
+balls = []
+
+# the biggest ball at first
+balls.append({
+    "pos_x" : 50,  # x position of the ball
+    "pos_y" : 50,  # y position of the ball
+    "img_index" : 0, # index of the ball
+    "to_x" : 3,    # movement to x, -3 to left, 3 to right
+    "to_y" : -6,   # movement to y
+    "init_spd_y" : ball_speed_y[0] # initial speed for y
+})
 
 # Event loop to prevent closing the window
 running = True # game is running
@@ -96,7 +118,26 @@ while running:
     # remove weapons once they reach top
     weapons = [ [w[0], w[1]] for w in weapons if w[1] > 0]
 
-    # 3-2 Game enemy's position
+    # 3-2 Game ball's position
+    for ball_index, ball_value in enumerate(balls) : 
+        ball_pos_x = ball_value["pos_x"]
+        ball_pos_y = ball_value["pos_y"]
+        ball_img_index = ball_value["img_index"]
+
+        ball_size = ball_images[ball_img_index].get_rect().size
+        ball_width = ball_size[0]
+        ball_height = ball_size[1]
+
+        # left to right or right to left when the ball reached to the wall
+        if ball_pos_x < 0 or ball_pos_x > screen_width - ball_width :
+            ball_value["to_x"] =  ball_value["to_x"] * 1 
+        
+        # Horizontal position
+        # when the ball bounced on the stage
+        if ball_pos_y >= screen_height - stage_height - ball_height :
+            ball_value["to_y"] = ball_value["init_spd_y"]
+        else :
+            ball_value["to_y"] += 0.5
 
     # 4. Dealing with collision 
 
