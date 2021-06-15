@@ -130,14 +130,17 @@ while running:
 
         # left to right or right to left when the ball reached to the wall
         if ball_pos_x < 0 or ball_pos_x > screen_width - ball_width :
-            ball_value["to_x"] =  ball_value["to_x"] * 1 
+            ball_value["to_x"] =  ball_value["to_x"] * -1 
         
         # Horizontal position
         # when the ball bounced on the stage
         if ball_pos_y >= screen_height - stage_height - ball_height :
             ball_value["to_y"] = ball_value["init_spd_y"]
-        else :
+        else : # Speed decreased when the ball is going up
             ball_value["to_y"] += 0.5
+
+        ball_value["pos_x"] += ball_value["to_x"]
+        ball_value["pos_y"] += ball_value["to_y"]
 
     # 4. Dealing with collision 
 
@@ -147,6 +150,12 @@ while running:
 
     for weapon_x_pos, weapon_y_pos in weapons :
         screen.blit(weapon, (weapon_x_pos, weapon_y_pos))
+    
+    for index, value in enumerate(balls):
+        ball_pos_x = value["pos_x"]
+        ball_pos_y = value["pos_y"]
+        ball_img_index = value["img_index"]
+        screen.blit(ball_images[ball_img_index], (ball_pos_x, ball_pos_y))
     
     screen.blit(stage, (0,screen_height-stage_height))
     screen.blit(character, (character_x_pos, character_y_pos))
